@@ -1,0 +1,3 @@
+backend-aauth/.env
+backend-aauth/node_modules/
+.idea/
