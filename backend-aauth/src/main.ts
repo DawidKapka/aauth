@@ -6,9 +6,14 @@ import * as dotenv from 'dotenv';
 import {AuthService} from "./db/services/auth.service";
 import {CryptoService} from "./db/services/crypto.service";
 import {DbService} from "./db/services/db.service";
+const cors = require('cors')
+
+dotenv.config();
+console.log(dotenv.config())
 
 const app = express()
 const port: number = 3000
+app.use(cors({credentials: true, origin: "http://127.0.0.1:5000"}))
 
 dotenv.config();
 const jsonParser = bodyParser.json();

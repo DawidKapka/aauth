@@ -1,0 +1,20 @@
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "lenoxy@gmx.ch",
+  "password": "hallovelo"
+}
+
+###
+
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+  "email": "lenoxy@gmx.ch",
+  "username": "lenoxy",
+  "password": "hallovelo"
+}
+
+###
