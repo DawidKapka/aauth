@@ -11,11 +11,10 @@ import {cryptoService} from "../../main";
 export class DbService {
 
     private connection: Connection | undefined = undefined;
-    private uri = `mongodb://aauth:hgh55892@116.203.151.23:27017/aauth`;
+    private uri = `mongodb://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.IP}:27017/${process.env.DBNAME}`;
     private cryptoService = cryptoService;
 
     constructor() {
-        console.log(`mongodb://aauth:hgh55892@116.203.151.23:27017/aauth`)
         mongoose.connect(this.uri)
     }
 
