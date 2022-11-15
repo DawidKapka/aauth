@@ -5,6 +5,7 @@ export default function Home() {
     <main>
       <Title>Aauth Homepage</Title>
       <h1>Aauth Page</h1>
+      <p>Hello there, General Kenobi</p>
     </main>
   );
 }

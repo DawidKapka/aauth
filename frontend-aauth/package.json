@@ -1,9 +1,9 @@
 {
   "name": "frontend-aauth",
   "scripts": {
-    "dev": "solid-start dev",
+    "dev": "solid-start dev --port 5000",
     "build": "solid-start build",
-    "start": "solid-start start"
+    "start": "solid-start start --port 5000"
   },
   "type": "module",
   "devDependencies": {
