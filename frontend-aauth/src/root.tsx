@@ -25,9 +25,6 @@ export default function Root() {
       <Body>
         <Suspense>
           <ErrorBoundary>
-            <A href="/">AAUTH</A>
-            <A href="/login">LOGIN</A>
-            <A href="/register">REGISTER</A>
             <Routes>
               <FileRoutes />
             </Routes>
