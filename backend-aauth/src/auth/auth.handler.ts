@@ -1,10 +1,10 @@
 import {Express, Request, Response} from "express";
 import {RegisterDto} from "../db/dto/register.dto";
 import {HttpResponse} from "../db/util/http-response";
-import {authService} from "../db/services/auth.service";
 import {LoginDto} from "../db/dto/login.dto";
-import {UserDto} from "../db/dto/user.dto";
-import {cryptoService} from "../db/services/crypto.service";
+import {UserDataDto} from "../db/dto/user-data.dto";
+import {cryptoService} from "../main";
+import {authService} from "../main";
 
 export class AuthHandler {
 
@@ -38,7 +38,7 @@ export class AuthHandler {
         }
     }
 
-    private createTokens(user: UserDto): [string, string] {
+    private createTokens(user: UserDataDto): [string, string] {
         const accessToken = cryptoService.createAccessToken(user.uid, user.email);
         const refreshToken = cryptoService.createRefreshToken(user.uid, user.email);
         return [accessToken, refreshToken];

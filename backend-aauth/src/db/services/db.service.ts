@@ -4,11 +4,11 @@ import {userModel} from "../schemas/user.schema";
 import {RegisterDto} from "../dto/register.dto";
 import {UserDto} from "../dto/user.dto";
 import {randomBytes} from "crypto";
-import {cryptoService} from "./crypto.service";
+import {UserDataDto} from "../dto/user-data.dto";
+import {cryptoService} from "../../main";
 
 
-
-class DbService {
+export class DbService {
 
     private connection: Connection | undefined = undefined;
     private uri = `mongodb://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.IP}:27017/${process.env.DBNAME}`;
@@ -18,11 +18,11 @@ class DbService {
         mongoose.connect(this.uri)
     }
 
-    public async saveUser(userDto: RegisterDto): Promise<UserDto> {
-        return new Promise<UserDto>(async (resolve) => {
+    public async saveUser(userDto: RegisterDto): Promise<UserDataDto> {
+        return new Promise<UserDataDto>(async (resolve) => {
             const user = new userModel(await this.createNewUser(userDto))
             user.save(() => {
-                resolve(user);
+                resolve({uid: user.uid, username: user.username, email: user.email});
             })
         })
     }
@@ -77,4 +77,4 @@ class DbService {
     }
 }
 
-export const dbService: DbService = new DbService();
+

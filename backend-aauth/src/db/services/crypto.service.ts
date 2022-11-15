@@ -2,7 +2,7 @@ import * as bcrypt from 'bcryptjs'
 import * as jwt from 'jsonwebtoken';
 import {DecodedTokenDto} from "../dto/decoded-token.dto";
 
-class CryptoService {
+export class CryptoService {
 
     public hashPassword(password: string) {
         return bcrypt.hash(password, 10);
@@ -35,4 +35,4 @@ class CryptoService {
     }
 }
 
-export const cryptoService = new CryptoService();
+
