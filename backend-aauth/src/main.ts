@@ -9,7 +9,6 @@ import {DbService} from "./db/services/db.service";
 const cors = require('cors')
 
 dotenv.config();
-console.log(dotenv.config())
 
 const app = express()
 const port: number = 3000

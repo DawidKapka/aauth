@@ -8,8 +8,6 @@ import {cryptoService} from "../../main";
 
 export class AuthService {
 
-    private dbService = dbService;
-
     constructor() {
     }
 
@@ -47,7 +45,7 @@ export class AuthService {
     public async refresh(refreshToken: string): Promise<string> {
         return new Promise<string>(async (resolve, reject) => {
             const decoded: DecodedTokenDto | undefined = cryptoService.decodeToken(refreshToken);
-            if (!decoded || !(await this.dbService.findUserByUid(decoded.uid))) {
+            if (!decoded || !(await dbService.findUserByUid(decoded.uid))) {
                 reject()
             } else {
                 resolve(cryptoService.createAccessToken(decoded.uid, decoded.email));
