@@ -1,0 +1,58 @@
+.main {
+    width: 0;
+    background-color: #8aeace;
+    animation: appear 600ms;
+    animation-delay: 600ms;
+    animation-fill-mode: forwards;
+    height: 100vh;
+}
+
+.title {
+    width: 40vw;
+    position: absolute;
+    margin: 25vh 0 0 0;
+    transform: translateX(-50%);
+    font-size: 48px;
+    animation: slide-in-from-left 600ms;
+    animation-delay: 1200ms;
+    animation-fill-mode: forwards;
+}
+
+.login {
+    position: absolute;
+    margin: 100vh 0 0 50vw;
+    transform: translateX(-50%);
+    animation: slide-in-from-bottom 600ms;
+    animation-delay: 1200ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes appear {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 50vw;
+    }
+}
+
+@keyframes slide-in-from-bottom {
+    0% {
+        margin: 100vh 0 0 50vw;
+        transform: translate(-50%, 0);
+    }
+    100% {
+        margin: 50vh 0 0 50vw;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes slide-in-from-left {
+    0% {
+        margin: 25vh 0 0 0;
+    }
+    100% {
+        margin: 25vh 0 0 50vw;
+    }
+}
