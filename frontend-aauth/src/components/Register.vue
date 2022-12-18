@@ -5,7 +5,7 @@
       <aa-input :error="false" placeholder="Email" type="email"/>
       <aa-input :error="false" placeholder="Password" type="password"/>
       <aa-input :error="false" placeholder="Repeat Password" type="password"/>
-      <aa-button text="Login" :loading="false" @click="register"/>
+      <aa-button text="Register" :loading="false" @click="register"/>
     </div>
   </div>
 </template>
@@ -35,7 +35,7 @@ export default class RegisterComponent extends Vue {
   justify-content: space-around;
 
   .register-container {
-    margin: 2em 0 0 0;
+    margin: 2em 0 2em 0;
     width: 75%
   }
 }

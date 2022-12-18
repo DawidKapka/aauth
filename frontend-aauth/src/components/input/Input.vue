@@ -1,10 +1,10 @@
 <template>
-  <input :type="type" class="input shadow-3d-black-left-small" :class="{'error': error}" :placeholder="placeholder"/>
+  <input :type="type" class="input shadow-3d-black-left-small" :class="{'error': error}" :placeholder="placeholder" @input="input($event)"/>
 </template>
 <script lang="ts">
 import Component from "vue-class-component";
 import Vue from "vue";
-import {Prop} from "vue-property-decorator";
+import {Prop, Model} from "vue-property-decorator";
 import {InputType} from "@/components/input/InputType";
 
 @Component
@@ -15,6 +15,11 @@ export default class InputComponent extends Vue {
   placeholder = '';
   @Prop()
   type: InputType = 'text'
+
+  private input(event: InputEvent) {
+    this.$emit('input', (event.target as HTMLInputElement).value)
+  }
+
 }
 
 </script>
