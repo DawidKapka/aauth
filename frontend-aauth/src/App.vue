@@ -53,6 +53,7 @@ export default class AppComponent extends Vue {
 
   private transitioning = false;
   private redirectTitle = '';
+  private animationInterval;
 
   private mounted() {
     saveRedirectTitle(this.$route.query.title as string);
@@ -61,17 +62,21 @@ export default class AppComponent extends Vue {
   }
 
   private animateTitle() {
-    const interval = setInterval(() => {
-      const length = this.redirectTitle.length + 1;
-      this.redirectTitle = ''
-      for (let i = 0; i < length; i++) {
-        if (this.redirectTitle.length !== getRedirectTitle().length) {
-          this.redirectTitle += getRedirectTitle()[i]
-        } else {
-          clearInterval(interval)
+    if (getRedirectTitle()) {
+      this.animationInterval = setInterval(() => {
+        const length = this.redirectTitle.length + 1;
+        this.redirectTitle = ''
+        for (let i = 0; i < length; i++) {
+          if (this.redirectTitle.length !== getRedirectTitle().length) {
+            this.redirectTitle += getRedirectTitle()[i]
+          } else {
+            clearInterval(this.animationInterval)
+          }
         }
-      }
-    }, 200)
+      }, 200)
+    } else {
+      clearInterval(this.animationInterval)
+    }
   }
 
   private isLogin() {
@@ -93,7 +98,10 @@ export default class AppComponent extends Vue {
   }
 
   private redirect() {
-    console.log(getRedirectUrl());
+    if (!getRedirectUrl()) {
+      saveRedirectUrl(this.$route.query.redirectUrl as string);
+    }
+    window.location.href = getRedirectUrl()
   }
 }
 </script>

@@ -12,10 +12,10 @@
 <script lang="ts">
 
 import Component from "vue-class-component";
-import Vue from "vue";
+import Vue, {inject} from "vue";
 import InputComponent from "@/components/input/Input.vue";
 import ButtonComponent from '@/components/button/Button.vue'
-import { login } from "@/services/HttpService";
+import { login, getRedirectUrl } from "@/services/HttpService";
 
 @Component({
   components: {
@@ -31,6 +31,21 @@ export default class LoginComponent extends Vue {
   private passwordError = false;
   private loading = false;
   private errors: string[] = []
+
+  public mounted() {
+    this.checkForCookies()
+  }
+
+  private checkForCookies() {
+    if (document.cookie) {
+      const cookies = document.cookie.split('; ').map(cookie => ({name: cookie.split('=')[0], value: cookie.split('=')[1]}));
+      const hasAccessToken = !!(cookies.find(cookie => cookie.name === 'accessToken'))
+      const hasRefreshToken = !!(cookies.find(cookie => cookie.name === 'refreshToken'))
+      if (hasAccessToken && hasRefreshToken) {
+        this.redirectToUrl()
+      }
+    }
+  }
 
   private loginValueChange(value: string) {
     this.loginValue = value;
@@ -49,12 +64,12 @@ export default class LoginComponent extends Vue {
 
     if (this.loginValue && this.passwordValue) {
       this.loading = true;
-      login({username: this.loginValue, password: this.passwordValue}).then(() => {
+      login({email: this.loginValue, password: this.passwordValue}).then(() => {
         this.loading = false;
+        this.checkForCookies();
       }).catch(e => {
         this.errors.push(e.message);
         this.loading = false;
-        this.redirectToUrl();
       })
     }
   }

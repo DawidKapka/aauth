@@ -4,17 +4,18 @@ import {RegisterData} from "@/models/RegisterData";
 
 let redirectUrl: string;
 let redirectTitle: string;
+const baseUrl = 'http://localhost:3000'
 
-const post = async (url: string, payload: string): Promise<any> => {
-    return await axios.post(url, payload)
+const post = async (url: string, payload: any): Promise<any> => {
+    return await axios.post(`${baseUrl}${url}`, payload, { withCredentials: true });
 }
 
 export const login = async (loginData: LoginData): Promise<void> => {
-    await post('/login', JSON.stringify(loginData));
+    const response = await post('/login', loginData);
 }
 
 export const register = async (registerData: RegisterData): Promise<void> => {
-    await post('/register', JSON.stringify(registerData))
+    await post('/register', registerData)
 }
 
 export const saveRedirectUrl = (url: string) => {
