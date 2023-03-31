@@ -22,6 +22,7 @@ export class AuthHandler {
     }
 
     private async register(req: Request, res: Response) {
+        /*
         const registerDto = req.body as RegisterDto;
         if (!this.checkRegisterDto(registerDto)) {
             res.status(HttpResponse.BAD_REQUEST).send();
@@ -37,6 +38,8 @@ export class AuthHandler {
                     .send(JSON.stringify(user))
             }
         }
+         */
+        res.send("test")
     }
 
     private createTokens(user: UserDataDto): [string, string] {
