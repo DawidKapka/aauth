@@ -1,11 +1,12 @@
 if [ -d "/root/aauth/aauth" ]; then
-    cd aauth
+    cd ~/aauth/aauth
     echo "pulling updates..."
     git pull
 else
+    cd ~/aauth
     echo "cloning projects..."
     git clone git@github.com:DawidKapka/aauth.git
-    cd aauth
+    cd ~/aauth/aauth
 fi
 cd ~/aauth/aauth/backend-aauth
 docker stop aauth
