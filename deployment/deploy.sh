@@ -9,6 +9,7 @@ else
 fi
 cd backend-aauth
 docker stop aauth
-docker-compose up -d --no-deps --build aauth
+docker rm aauth
+docker build -t aauth .
 docker run --name aauth -p 3000:3000 -d aauth
 docker network connect aauth-network aauth
