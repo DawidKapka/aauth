@@ -9,5 +9,6 @@ else
 fi
 cd backend-aauth
 docker stop aauth
+docker rm aauth
 docker build -t aauth .
 docker run --name aauth -p 3000:3000 -d aauth
