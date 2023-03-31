@@ -7,7 +7,7 @@ else
     git clone git@github.com:DawidKapka/aauth.git
     cd aauth
 fi
-
+cd backend-aauth
 docker stop aauth
 docker build -t aauth .
 docker run --name aauth -p 3000:3000 -d aauth
