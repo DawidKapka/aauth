@@ -44,11 +44,22 @@ export class AuthService {
 
     public async refresh(refreshToken: string): Promise<string> {
         return new Promise<string>(async (resolve, reject) => {
-            const decoded: DecodedTokenDto | undefined = cryptoService.decodeToken(refreshToken);
+            const decoded: DecodedTokenDto | undefined = cryptoService.decodeRefreshToken(refreshToken);
             if (!decoded || !(await dbService.findUserByUid(decoded.uid))) {
                 reject()
             } else {
                 resolve(cryptoService.createAccessToken(decoded.uid, decoded.email));
+            }
+        })
+    }
+
+    public async authenticate(accessToken: string) {
+        return new Promise<boolean>(async (resolve, reject) => {
+            const decoded: DecodedTokenDto | undefined = cryptoService.decodeRefreshToken(accessToken);
+            if (!decoded || !(await dbService.findUserByUid(decoded.uid))) {
+                reject()
+            } else {
+                resolve(true);
             }
         })
     }

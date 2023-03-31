@@ -26,9 +26,17 @@ export class CryptoService {
         return bcrypt.compare(password, hash);
     }
 
-    decodeToken(refreshToken: string): DecodedTokenDto | undefined {
+    decodeRefreshToken(refreshToken: string): DecodedTokenDto | undefined {
         try {
             return jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY as string) as DecodedTokenDto;
+        } catch {
+            return undefined;
+        }
+    }
+
+    decodeAccessToken(accessToken: string): DecodedTokenDto | undefined {
+        try {
+            return jwt.verify(accessToken, process.env.ACCESS_TOKEN_KEY as string) as DecodedTokenDto;
         } catch {
             return undefined;
         }

@@ -1,18 +1,21 @@
 // @ts-ignore
 import express from 'express'
 import {AuthHandler} from "./auth/auth.handler";
+import { DataHandler } from './data/data.handler';
 import * as bodyParser from "body-parser";
 import * as dotenv from 'dotenv';
 import {AuthService} from "./db/services/auth.service";
 import {CryptoService} from "./db/services/crypto.service";
 import {DbService} from "./db/services/db.service";
+const cookieParser = require('cookie-parser');
 const cors = require('cors')
 
 dotenv.config();
 
 const app = express()
 const port: number = 3000
-app.use(cors({credentials: true, origin: "http://127.0.0.1:5000"}))
+app.use(cors({credentials: true, origin: "http://localhost:8080"}))
+app.use(cookieParser())
 
 dotenv.config();
 const jsonParser = bodyParser.json();
@@ -20,6 +23,8 @@ app.use(jsonParser);
 
 const authHandler: AuthHandler = new AuthHandler(app);
 authHandler.registerEndpoints();
+const dataHandler: DataHandler = new DataHandler(app);
+dataHandler.registerEndpoints();
 
 export const authService = new AuthService()
 export const cryptoService = new CryptoService();

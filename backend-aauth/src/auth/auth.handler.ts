@@ -3,7 +3,7 @@ import {RegisterDto} from "../db/dto/register.dto";
 import {HttpResponse} from "../db/util/http-response";
 import {LoginDto} from "../db/dto/login.dto";
 import {UserDataDto} from "../db/dto/user-data.dto";
-import {cryptoService} from "../main";
+import {cryptoService, dbService} from "../main";
 import {authService} from "../main";
 
 export class AuthHandler {
@@ -18,6 +18,7 @@ export class AuthHandler {
         this.app.post('/register', (req: Request, res: Response) => this.register(req, res))
         this.app.post('/login', (req: Request, res: Response) => this.login(req, res))
         this.app.post('/refresh', (req: Request, res: Response) => this.refresh(req, res))
+        this.app.post('/logout', (req: Request, res: Response) => this.logout(req, res))
     }
 
     private async register(req: Request, res: Response) {
@@ -41,6 +42,7 @@ export class AuthHandler {
     private createTokens(user: UserDataDto): [string, string] {
         const accessToken = cryptoService.createAccessToken(user.uid, user.email);
         const refreshToken = cryptoService.createRefreshToken(user.uid, user.email);
+        dbService.saveRefreshToken(user.uid, refreshToken);
         return [accessToken, refreshToken];
     }
 
@@ -67,11 +69,13 @@ export class AuthHandler {
         if (!refreshToken || Object.keys(req.body).length !== 1) {
             res.status(HttpResponse.BAD_REQUEST).send();
         } else {
-            authService.refresh(refreshToken).then(accessToken => {
-                res.status(HttpResponse.OK).cookie('accessToken', accessToken).send();
-            }).catch(() => {
-                res.status(HttpResponse.UNAUTHORIZED).send('Invalid token!')
-            });
+            this.checkRefreshToken(refreshToken).then(() => {
+                authService.refresh(refreshToken).then(accessToken => {
+                    res.status(HttpResponse.OK).cookie('accessToken', accessToken).send();
+                }).catch(() => {
+                    res.status(HttpResponse.UNAUTHORIZED).send('Invalid token!')
+                });
+            }).catch(() => res.status(HttpResponse.UNAUTHORIZED).send('Invalid token!'))
         }
     }
 
@@ -81,5 +85,31 @@ export class AuthHandler {
 
     private checkLoginDto(dto: LoginDto) {
         return !!(dto.email && dto.password && Object.keys(dto).length === 2);
+    }
+
+    private logout(req: Request, res: Response) {
+        res.clearCookie('accessToken');
+        res.clearCookie('refreshToken');
+        if (!req.cookies['refreshToken']) {
+            res.status(HttpResponse.UNAUTHORIZED).send();
+        } else {
+            dbService.deleteRefreshToken(req.cookies['refreshToken']).then(() => {
+                res.status(HttpResponse.OK).send();
+            }).catch(() => {
+                res.status(HttpResponse.UNAUTHORIZED).send();
+            })
+        }
+    }
+
+    private checkRefreshToken(refreshToken: any) {
+        return new Promise<void>((resolve, reject) => {
+            dbService.findUserByRefreshToken(refreshToken).then(user => {
+                if (user) {
+                    resolve()
+                } else {
+                    reject()
+                }
+            })
+        })
     }
 }

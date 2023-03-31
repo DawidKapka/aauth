@@ -17,6 +17,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    refreshToken: {
+        type: String,
+        required: false
+    }
 })
 
 export const userModel = model("User", UserSchema)

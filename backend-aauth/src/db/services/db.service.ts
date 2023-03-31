@@ -75,6 +75,34 @@ export class DbService {
             })
         })
     }
+
+    public async saveRefreshToken(uid: string, refreshToken: string): Promise<void> {
+        return new Promise<void>(async (resolve) => {
+            const user = await this.findUserByUid(uid);
+            if (user) {
+                user.refreshToken = refreshToken;
+                user.save();
+                resolve();
+            }
+        })
+    }
+
+    public async findUserByRefreshToken(token: string) {
+        return userModel.findOne({refreshToken: token})
+    }
+
+    deleteRefreshToken(token: string) {
+        return new Promise<void>(async (resolve, reject) => {
+            const user = await this.findUserByRefreshToken(token)
+            if (user) {
+                user.refreshToken = undefined;
+                user.save();
+                resolve();
+            } else {
+                reject();
+            }
+        })
+    }
 }
 
 
